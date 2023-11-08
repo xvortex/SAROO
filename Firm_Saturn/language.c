@@ -55,14 +55,14 @@ char *lang_en[LANG_STR_NR] = {
 	"Loading File ......",
 	"Load File Failed! %d",
 	"Select Game",
-	"System CDPlayer",
+	"Audio CD Player",
 	"Load Game Disc",
 	"Serial Debug Shell",
 	"Load Binary",
-	"Firm Update",
+	"Firmware Update",
 	"Updating... Don't PowerOff!",
 	"Update Failed!",
-	"Update Finish! Please PowerOn again!",
+	"Update Finish! Please reboot!",
 	"SAROO Boot Menu",
 	"Checking Disc ......",
 	"No Disc Found!",
@@ -83,9 +83,9 @@ char *lang_ptbr[LANG_STR_NR] = {
 	"Shell de Depuração serial",
 	"Carregando Binário",
 	"Atualizar a Firmware",
-	"Atualizando... Não desligue o sistema!",
+	"Atualizando... Não desligue!",
 	"Erro ao atualizar!",
-	"Finalizado, reinicie o sistema!",
+	"Finalizado, reinicie!",
 	"SAROO Menu de Inicialização",
 	"Verificando o disco ......",
 	"Sem CD!",
@@ -110,9 +110,32 @@ char *lang_ja[LANG_STR_NR] = {
 	"アップデート失敗！",
 	"アップデート完了、再起動してください！",
 	"SAROO ブートメニュー",
-	"ディスクを確認してください...",
-	"ディスクなし!",
-	"ゲームディスクじゃないよ!",
+	"ディスクを確認しています......",
+	"ディスクが入っていません",
+	"ゲームディスクではありません",
+};
+
+
+char *lang_ru[LANG_STR_NR] = {
+	"Выбор игры (%d/%d)",
+	"Выбор файла (%d/%d)",
+	"Запуск игры ...",
+	"Сбой запуска игры! %d",
+	"Запуск файла ...",
+	"Сбой запуска файла! %d",
+	"Выбрать игру",
+	"Аудио CD плеер",
+	"Запустить игру с CD",
+	"Инструмент отладки",
+	"Запустить исп. файл",
+	"Обновление ПО",
+	"Обновление, не отключайте ...",
+	"Сбой обновления!",
+	"Обновлено! Требуется перезапуск!",
+	"Главное меню SAROO",
+	"Проверка диска ...",
+	"Диск не найден!",
+	"Не игровой диск!",
 };
 
 
@@ -182,6 +205,8 @@ void lang_init(void)
 		lang_cur = lang_ptbr;
 	}else if(lang_id==3){
 		lang_cur = lang_ja;
+	}else if(lang_id==4){
+		lang_cur = lang_ru;
 	}
 }
 

@@ -222,7 +222,7 @@ int smpc_cmd(int cmd);
 
 
 void conio_init(void);
-void conio_put_char(int x, int y, int color, int ch);
+int conio_put_char(int x, int y, int color, int ch);
 void conio_putc(int ch);
 u32 conio_getc(void);
 

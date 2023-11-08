@@ -43,7 +43,6 @@ $(EXE)	: $(OBJ)
 	$(OBJCOPY) -O binary $(EXE) tmp.bin
 	dd if=/dev/zero  of=ramimage.bin bs=1k count=384
 	dd if=tmp.bin    of=ramimage.bin conv=notrunc
-	dd if=hzk14u.bin of=ramimage.bin bs=1k seek=128 conv=notrunc
 	rm -f tmp.bin
 
 obj/%.o :	%.c
