@@ -109,6 +109,8 @@ void conio_init(void)
 
 	void fbtest();
 	fbtest();
+
+	text_color = 0xfd;
 }
 
 
@@ -189,6 +191,7 @@ int conio_put_char(int x, int y, int color, int v)
 	int r, c, xx;
 	u8 *bmp, *font_data;
 	unsigned char fg = (color >> 4) & 0x0F;
+	unsigned char bg = (color >> 0) & 0x0F;
 
 	bmp = fbptr+y*llen+x;
 
@@ -198,8 +201,8 @@ int conio_put_char(int x, int y, int color, int v)
 			u8 b = *(u8*)(font_data+r);
 			xx = x;
 			for (c=0; c<8; c++) {
-				if (++xx >= lim_x) break;
-				u8 d = (b&(1<<(7-c))) ? fg : bmp[c];
+				if (++xx > lim_x) break;
+				u8 d = (b&(1<<(7-c))) ? fg : (bg == 0x0d) ? bgr[(y+r)*fbw+x+c] : bg;
 				bmp[c] = d;
 			}
 			bmp += llen;
@@ -215,8 +218,8 @@ int conio_put_char(int x, int y, int color, int v)
 		u16 b = *(u16*)(font_data+r*2);
 		xx = x;
 		for (c=0; c<16; c++) {
-			if (++xx >= lim_x) break;
-			u8 d = (b&(1<<(15-c))) ? fg : bmp[c];
+			if (++xx > lim_x) break;
+			u8 d = (b&(1<<(15-c))) ? fg : (bg == 0x0d) ? bgr[(y+r)*fbw+x+c] : bg;
 			bmp[c] = d;
 		}
 		bmp += llen;
@@ -248,13 +251,18 @@ static int utf8_to_ucs(char **ustr)
 }
 
 
-void conio_put_string(int x, int y, int color, char *str)
+void conio_put_string(int x, int y, int color, char *str, int len)
 {
 	int ch, w;
 
-	while( (ch=utf8_to_ucs(&str)) ){
+	while(1) {
+		ch = utf8_to_ucs(&str);
+		if (!ch){
+		  if (!len) break; else ch = 0x20;
+		}
 		w = conio_put_char(x, y, color, ch);
 		x += w;
+		if (len) len--;
 	}
 }
 
@@ -393,17 +401,6 @@ void put_box(int x1, int y1, int x2, int y2, int c)
 	}
 }
 
-void put_bg_box(int x1, int y1, int x2, int y2)
-{
-	u8 *bmp;
-	int y;
-
-	for(y=y1; y<=y2; y++){
-		bmp = fbptr+x1+y*llen;
-		memcpy((void*)bmp, (void*)&bgr[x1+fbw*y], x2 - x1 + 1);
-	}
-}
-
 /******************************************************************************/
 
 static u32 last_pdat = 0;
@@ -481,16 +478,8 @@ static void draw_menu_item(int index, char *item, int select)
 {
 	int mx = 16;
 	int my = 24+index*16;
-	int color = text_color;
 
-	if(select){
-		color = 0x0f;
-		put_box(mx, my, mx+36*8-1, my+16-1, (color&0x0f));
-	} else {
-		put_bg_box(mx, my, mx+36*8-1, my+16-1);
-	}
-
-	conio_put_string(mx, my, color, item);
+	conio_put_string(mx, my, select ? 0x0f : text_color, item, 36);
 }
 
 
@@ -518,7 +507,7 @@ void draw_menu_frame(MENU_DESC *menu)
 		memcpy((void*)bmp, (void*)&bgr[fbw*r], fbw);
 	}
 
-	conio_put_string(32, 4, text_color, menu->title);
+	conio_put_string(32, 4, text_color, menu->title, 0);
 
 	menu_update(menu);
 	if(menu->version){
@@ -532,10 +521,7 @@ void menu_status(MENU_DESC *menu, char *string)
 	int mx = 16;
 	int my = fbh-1-16-4;
 
-	put_bg_box(mx, my, mx+38*8-1, my+16-1);
-	if(string){
-		conio_put_string(mx, my, text_color, string);
-	}
+	conio_put_string(mx, my, text_color, string, 38);
 }
 
 
