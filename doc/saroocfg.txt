@@ -1,29 +1,58 @@
-# SAROO config file
-# 可用配置:
-#   lang_id=x
-#     选择菜单语言:  0:中文  1:EN  2:PTBR  3:JA
-#   debug=xxxxxxxx
-#     各种调试选项
-#   auto_update:
-#     MCU自动升级固件
-#   play_delay=xxxx
-#     PLAY开始前的延时。十进制us单位。
-#   sector_delay=xxxx
-#     每读一个扇区后的延时。十进制us单位。
-#   exmem_1M
-#     使用1M扩展卡
-#   exmem_4M
-#     使用4M扩展卡
-#   M_xxxxxxxx=xxxxxxxx
-#     写32位内存
-#   M_xxxxxxxx=xxxx
-#     写16位内存
-#   M_xxxxxxxx=xx
-#     写8位内存
-#
+### SAROO config file ###
+## Available configurations: ##
+
+## Select menu language: 
+## 0 = Chinese
+## 1 = English 
+## 2 = Brazilian Portuguese
+## 3 = Japanese
+## 4 = Russian (xvortex build)
+# lang_id=x
+
+## Various debugging options ##
+# debug=xxxxxxxx
+
+## MCU automatically upgrades firmware ##
+# auto_update:
+
+## Delay before PLAY starts. Decimal US units. ##
+# play_delay=xxxx
+
+## Delay after each sector is read. Decimal US units. ##
+# sector_delay=xxxx
+
+## Use 1M expansion card ##
+# exmem_1M
+
+## Use 4M expansion card ##
+# exmem_4M
+
+## Write 32-bit memory ##
+# M_xxxxxxxx=xxxxxxxx
+
+## Write 16-bit memory ##
+# M_xxxxxxxx=xxxx
+
+## Write 8-bit memory ##
+# M_xxxxxxxx=xx
 
 [global]
-lang_id = 0
+lang_id = 1
+
+
+# Asuka120pct BurningFest. Limited
+[T-16708G  V1.003]
+sector_delay=4000
+
+
+# NINPEN MANMARU
+[T-35502G  V1.001]
+sector_delay=4000
+
+
+# PUYO PUYO SUN
+[T-6603G   V2.000]
+sector_delay=4000
 
 
 # Final Fight Revenge
@@ -41,22 +70,96 @@ sector_delay=4000
 sector_delay=1000
 
 
-# TAROMARU         太郎丸
+# TAROMARU
 [T-4804G   V1.004]
 sector_delay=1000
 
 
-# SALAMANDER-DP    沙罗曼蛇合集
+# SALAMANDER-DP    
 [T-9520G   V1.010]
 sector_delay=2000
 
 
-# Princess Crown   公主的皇冠
+# Princess Crown
 [T-14418G  V1.004]
-sector_delay=6000
+sector_delay=4000
 
 
-# ROUKA NI ITIDANTOA-RU  世嘉经典-游戏大挑战-廊下
+# ROUKA NI ITIDANTOA-RU  
 [GS-9043   V1.002]
 sector_delay=4000
 
+
+# SATURN BOMBERMAN FIGHT
+[T-14321G  V1.000]
+sector_delay=23000
+
+
+# Nonomura Byouin no Hitobito
+[T-28001G  V1.000]
+sector_delay=8000
+
+
+# BOMBERMAN WARS
+[T-14320G  V1.000]
+sector_delay=23000
+
+
+# TAROMARU
+[T-4804G   V1.004]
+sector_delay=2000
+
+
+# ESTO E ZICO
+# [T-18802G  V1.000]
+# sector_delay=23000
+
+
+# GUNBIRD
+# [T-14402G  V1.01J]
+# sector_delay=2000
+
+
+# MK TRILOGY (EUR)
+# [T-25414H50V1.000]
+# sector_delay=4000
+
+
+# ULTIMATE MORTAL KOMBAT 3 (EUR)
+# [T-25403H  V2.000]
+# sector_delay=4000
+
+
+# STREET FIGHTER ZERO3 (JAP)
+[T-1246G   V1.002]
+sector_delay=1000
+
+
+# THE KING OF FIGHTERS'95 (JAP)
+# [T-3101G   V1.000]
+# exmem_4M
+
+
+# KOF '96 HACK (JAP)
+# [T-3108G   V1.001]
+# exmem_4M
+
+
+# THUNDER FORCE GOLD PACK 2 (J)
+# [T-1808G   V1.003]
+# sector_delay=10000
+
+
+# GO GO GOAL
+[T-3602G   V1.004]
+sector_delay=4000
+
+
+# INITIAL D
+# [T-25503G  V1.003]
+# sector_delay=8000
+
+
+# TACTICS_OGRE
+# [T-5306G   V1.003]
+# sector_delay=2000
