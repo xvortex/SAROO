@@ -1,6 +1,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+//#define DEBUG_PRINTK
 
 #include <stm32h7xx.h>
 #include <cmsis_os2.h>
@@ -18,7 +19,7 @@ typedef long long s64;
 
 
 #define in_isr()        __get_IPSR()
-#define disable_irq()   __disable_irq()
+#define disable_irq()   __get_PRIMASK();__disable_irq()
 #define restore_irq(pm) __set_PRIMASK(pm)
 
 #define NOTHING()    __asm volatile("")
@@ -39,7 +40,12 @@ void _putc(u8 byte);
 void _puts(char *str);
 void uart4_puts(char *str);
 
+#ifdef DEBUG_PRINTK
 int printk(char *fmt, ...);
+#else
+#define printk(...) do {} while (0)
+#endif
+
 int sprintk(char *sbuf, const char *fmt, ...);
 void hex_dump(char *str, void *addr, int size);
 

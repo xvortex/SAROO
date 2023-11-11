@@ -255,6 +255,7 @@ int vsnprintk(char *buf, int size, char *fmt, va_list args)
 
 //static char printk_buf[256];
 
+#ifdef DEBUG_PRINTK
 int printk(char *fmt, ...)
 {
 	va_list args;
@@ -274,6 +275,7 @@ int printk(char *fmt, ...)
 
 	return printed_len;
 }
+#endif
 
 
 int sprintk(char *sbuf, const char *fmt, ...)
