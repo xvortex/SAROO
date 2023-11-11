@@ -1,11 +1,11 @@
 
 ### SAROO is a HDLoader for SEGA Saturn.
 
-SAROO是一个土星光驱模拟器。SAROO插在卡槽上，实现原主板的CDBLOCK的功能，从SD卡装载游戏并运行。
-SAROO同时还提供1MB/4MB加速卡功能。
+SAROO is a Sega Saturn optical drive emulator. SAROO is inserted into the card slot and realizes the CDBLOCK function of the original motherboard, loading games from the SD card and running them.
+SAROO also provides 1MB/4MB accelerator card function.
 
 --------
-### 一些图片
+### Some pictures
 
 <img src="doc/saroo_v12_top.jpg" width=48%/>  <img src="doc/saroo_v12_bot.jpg" width=48%/>
 <img src="doc/saroo_scr1.png" width=48%/>  <img src="doc/saroo_scr2.png" width=48%/>
@@ -14,65 +14,59 @@ SAROO同时还提供1MB/4MB加速卡功能。
 
 
 --------
-### 开发历史
+### Development History
 
 #### V1.0
-最初的SAROO仅仅是在常见的usbdevcart上增加了一个usbhost接口。需要对游戏主程序进行破解，将对CDBLOCK的操作转化为对U盘的操作。
-这种方式需要针对每一个游戏做修改，不具备通用性。性能与稳定性也有很大问题。只有很少的几个游戏通过这种方式跑起来了。
-(V1.0相关的文件未包括在本项目中)
-
+The original SAROO just added a usbhost interface to the common usbdevcart. It is necessary to crack the main program of the game and convert the operation of CDBLOCK into the operation of U disk.
+This method needs to be modified for each game and is not universal. There are also big problems with performance and stability. Only a few games have been launched this way.
+(V1.0 related files are not included in this project)
 
 #### V1.1
-新版本做了全新的设计。采用FPGA+MCU的方式。FPGA(EP4CE6)用来实现CDBLOCK的硬件接口，MCU(STM32F103)运行固件来处理各种CDBLOCK命令。
-这个版本基本达到了预期的目的，也有游戏几乎能运行了。但也有一个致命的问题: 随机的数据错误。在播放片头动画时会出现各种马赛克，
-并最终死掉。这个问题很难调试定位。这导致了本项目停滞了很长时间。
-
+The new version has a completely new design. Adopt FPGA+MCU method. FPGA (EP4CE6) is used to implement the hardware interface of CDBLOCK, and MCU (STM32F103) runs firmware to process various CDBLOCK commands.
+This version has basically achieved the intended purpose, and some games can almost run. But there is also a fatal problem: random data errors. Various mosaics will appear when playing the title animation.
+and eventually died. This problem is difficult to debug and locate. This resulted in the project being stalled for a long time.
 
 #### V1.2
-1.2版本是1.1版本的bugfix与性能提升，使用了更高性能的MCU:STM32H750。它频率足够高(400MHz)，内部有足够大的SRAM，可以容纳完整的CDC缓存。
-FPGA内部也经过重构，抛弃了qsys系统，使用自己实现的SDRAM与总线结构。这个版本不负众望，已经是接近完美的状态了。
-同时，通过把FPGA与MCU固件逆移植到V1.1硬件之上，V1.1也基本达到了V1.2的性能了。
-
-
---------
-### 当前状态
-
-测试的几十个游戏可以完美运行。  
-1MB/4MB加速卡功能可以正常使用。  
-SD卡支持FAT32/ExFAT文件系统。  
-支持cue/bin格式的镜像文件。单bin或多bin。  
-部分游戏会卡在加载/片头动画界面。  
-部分游戏会卡在进行游戏时。  
-
+Version 1.2 is a bugfix and performance improvement of version 1.1, using a higher-performance MCU: STM32H750. It's high enough frequency (400MHz) and has enough SRAM inside to accommodate a full CDC cache.
+The FPGA has also been restructured internally, abandoning the qsys system and using its own SDRAM and bus structure. This version lives up to expectations and is already in near-perfect condition.
+At the same time, by back-porting the FPGA and MCU firmware to V1.1 hardware, V1.1 has basically reached the performance of V1.2.
 
 --------
-### 硬件与固件
+### Current status
 
-原理图与PCB使用AltiumDesign14制作。  
-V1.1版本需要飞线才能正常工作。不应该再使用这个版本了。  
-V1.2版本仍然需要额外的一个上拉电阻以使用FPGA的AS配置方式。  
-
-FPGA使用Quartus14.0开发。  
-
-Firm_Saturn使用SaturnOrbit自带的SH-ELF编译器编译。  
-Firm_v11使用MDK4编译。  
-Firm_V12使用MDK5编译。  
-
+Dozens of games tested worked perfectly.
+The 1MB/4MB accelerator card function can be used normally.
+SD card supports FAT32/ExFAT file system.
+Supports image files in cue/bin format. Single bin or multiple bins.
+Some games will get stuck in the loading/title animation interface.
+Some games will get stuck while playing.
 
 --------
-### SD卡文件放置
+### Hardware and Firmware
+
+The schematic diagram and PCB are produced using AltiumDesigner 14.
+Version V1.1 requires flying cables to work properly. This version should no longer be used.
+The V1.2 version still requires an additional pull-up resistor to use the FPGA's AS configuration mode.
+
+FPGA is developed using Quartus 14.0.
+
+Firm_Saturn is compiled using the SH-ELF compiler that comes with SaturnOrbit.
+
+Firm_v11 is compiled using MDK4.
+Firm_V12 is compiled using MDK5.
+
+--------
+### SD card file placement
 
 <pre>
-/ramimage.bin      ;Saturn的固件程序.
-/SAROO/ISO/        ;存放游戏镜像. 每个目录放一个游戏. 目录名将显示在菜单中.
-/SAROO/update/     ;存放用于升级的固件.
+/ramimage.bin      ;Saturn firmware program;
+/saroocfg.txt      ;configuration file;
+/SAROO/ISO/        ;Stores game images. One game per directory. The directory name will be displayed in the menu;
+/SAROO/update/     ;Stores firmware upgrades;
                    ;  FPGA: SSMaster.rbf
                    ;  MCU : ssmaster.bin
 </pre>
 
 
 --------
-一些开发中的记录: [SAROO技术点滴](doc/SAROO技术点滴.txt)
-
-
-
+一Some features under development: [SAROO tech info](doc/SAROO技术点滴.txt)
