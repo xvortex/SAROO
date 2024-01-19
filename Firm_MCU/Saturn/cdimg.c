@@ -193,6 +193,7 @@ int parse_cue(char *fname)
 			}
 		}else if(strcmp(token, "PREGAP")==0){
 		}else if(strcmp(token, "CATALOG")==0){
+		}else if(strcmp(token, "REM")==0){
 		}else{
 			return -10;
 		}
@@ -424,7 +425,7 @@ int load_disc(int index)
 		if(retv){
 			goto _exit;
 		}
-		parse_config("/saroocfg.txt", gameid);
+		parse_config("/SAROO/saroocfg.txt", gameid);
 
 		if(sector_delay_force>=0){
 			sector_delay = sector_delay_force;
