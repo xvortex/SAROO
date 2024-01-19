@@ -59,12 +59,13 @@ Firm_V12 is compiled using MDK5.
 ### SD card file placement
 
 <pre>
-/ramimage.bin      ;Saturn firmware program;
-/saroocfg.txt      ;configuration file;
-/SAROO/ISO/        ;Stores game images. One game per directory. The directory name will be displayed in the menu;
-/SAROO/update/     ;Stores firmware upgrades;
-                   ;  FPGA: SSMaster.rbf
-                   ;  MCU : ssmaster.bin
+/ramimage.bin       ;Saturn firmware program;
+/SAROO/saroocfg.txt ;configuration file;
+/SAROO/ISO/         ;Stores game images. One game per directory. The directory name will be displayed in the menu;
+/SAROO/BIN/         ;Stores bins. One bin per directory. The directory name will be displayed in the menu;
+/SAROO/update/      ;Stores firmware upgrades;
+                    ;  FPGA: SSMaster.rbf
+                    ;  MCU : mcuboot.bin
 </pre>
 
 

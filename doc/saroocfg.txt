@@ -7,6 +7,7 @@
 ## 2 = Brazilian Portuguese
 ## 3 = Japanese
 ## 4 = Russian (xvortex build)
+## 5 = French (xvortex build)
 # lang_id=x
 
 ## Various debugging options ##
