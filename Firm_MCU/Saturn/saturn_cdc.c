@@ -584,8 +584,23 @@ int init_cdblock(void)
 	HIRQ_CLR = HIRQ_PEND | HIRQ_DRDY | HIRQ_BFUL;
 
 	set_report(cdb.status);
-	return HIRQ_ESEL;
+	return HIRQ_ESEL|HIRQ_EHST;
 }
+
+
+// 0x05 [S-]
+int open_tray(void)
+{
+	SSLOG(_INFO, "open_tray\n");
+
+	SSCR1 = (cdb.status<<8);
+	SSCR2 = 0x0000;
+	SSCR3 = 0x0000;
+	SSCR4 = 0x0000;
+
+	return 0;
+}
+
 
 // 0x06 [S-]
 int end_trans(void)
@@ -1089,8 +1104,6 @@ void free_partition(PARTITION *pt)
 
 }
 
-// 有些游戏(InTheHunt)利用reset_filter来删除扇区。这里需要hack一下。
-static int gs_spos, gs_snum=0;
 
 // 0x48 [SR]
 int reset_filter(void)
@@ -1112,13 +1125,7 @@ int reset_filter(void)
 	}
 
 	if(mode==0){
-		if(gs_snum){
-			// 只删除get_sector_data用到的block。
-			while(gs_snum){
-				remove_block(&cdb.part[fid], gs_spos);
-				gs_snum -= 1;
-			}
-		}else if(fid<MAX_SELECTORS){
+		if(fid<MAX_SELECTORS){
 			free_partition(&cdb.part[fid]);
 		}
 	}else{
@@ -1151,7 +1158,6 @@ int reset_filter(void)
 			}
 		}
 	}
-	gs_snum = 0;
 
 	return HIRQ_ESEL;
 }
@@ -1314,8 +1320,6 @@ int get_sector_data(void)
 		set_status(STAT_WAIT | cdb.status);
 		return 0;
 	}
-	gs_spos = spos;
-	gs_snum = snum;
 
 	cdb.trans_type = TRANS_DATA;
 	cdb.trans_part_index = pt;
@@ -1333,8 +1337,6 @@ int del_sector_data(void)
 {
 	int pt, spos, snum;
 	PARTITION *pp;
-
-	gs_snum = 0;
 
 	pt   = cdb.cr3>>8;
 	spos = cdb.cr2;
@@ -1368,8 +1370,6 @@ int get_del_sector_data(void)
 {
 	int pt, spos, snum;
 	PARTITION *pp;
-
-	gs_snum = 0;
 
 	if(cdb.trans_type){
 		set_status(STAT_WAIT | cdb.status);
@@ -1954,6 +1954,8 @@ void cdc_cmd_process(void)
 	case 0x03: hirq = get_session_info();
 		break;
 	case 0x04: hirq = init_cdblock();
+		break;
+	case 0x05: hirq = open_tray();
 		break;
 	case 0x06: hirq = end_trans();
 		break;

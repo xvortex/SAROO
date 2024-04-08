@@ -358,7 +358,7 @@ typedef struct menu_desc_t {
 	int num;
 	int current;
 	char title[64];
-	char items[11][64];
+	char items[11][96];
 	char *version;
 	int (*handle)(int index);
 }MENU_DESC;
@@ -378,6 +378,7 @@ int menu_default(MENU_DESC *menu, int ctrl);
 
 extern int lang_id;
 void lang_init(void);
+void lang_next(void);
 char *TT(char *str);
 
 /*****************************************************************************/

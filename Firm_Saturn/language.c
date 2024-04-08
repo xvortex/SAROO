@@ -55,14 +55,14 @@ char *lang_en[LANG_STR_NR] = {
 	"Loading File ......",
 	"Load File Failed! %d",
 	"Select Game",
-	"Audio CD Player",
+	"System CDPlayer",
 	"Load Game Disc",
 	"Serial Debug Shell",
 	"Load Binary",
-	"Firmware Update",
+	"Firm Update",
 	"Updating... Don't PowerOff!",
 	"Update Failed!",
-	"Update Finish! Please reboot!",
+	"Update Finish! Please PowerOn again!",
 	"SAROO Boot Menu",
 	"Checking Disc ......",
 	"No Disc Found!",
@@ -83,9 +83,9 @@ char *lang_ptbr[LANG_STR_NR] = {
 	"Shell de Depuração serial",
 	"Carregando Binário",
 	"Atualizar a Firmware",
-	"Atualizando... Não desligue!",
+	"Atualizando... Não desligue o sistema!",
 	"Erro ao atualizar!",
-	"Finalizado, reinicie!",
+	"Finalizado, reinicie o sistema!",
 	"SAROO Menu de Inicialização",
 	"Verificando o disco ......",
 	"Sem CD!",
@@ -116,6 +116,29 @@ char *lang_ja[LANG_STR_NR] = {
 };
 
 
+char *lang_fr[LANG_STR_NR] = {
+	"Choisir un jeu (%d/%d)",
+	"Choisir un fichier (%d/%d)",
+	"Démarrage du jeu...",
+	"Erreur lors du démarrage du jeu ! %d",
+	"Chargement du fichier...",
+	"Erreur de chargement du fichier ! %d",
+	"Choisir un jeu",
+	"Lecteur CD",
+	"Charger un jeu CD-ROM",
+	"Console de débogage série",
+	"Charger un binaire",
+	"Mise à jour du firmware",
+	"Mise à jour... Ne pas éteindre le système !",
+	"Erreur de mise à jour !",
+	"Mise à jour terminée ! Redémarrez le système !",
+	"SAROO Menu de démarrage",
+	"Vérification du disque...",
+	"Aucun disque trouvé !",
+	"Disque de jeu non détecté !"
+};
+
+
 char *lang_ru[LANG_STR_NR] = {
 	"Выбор игры (%d/%d)",
 	"Выбор файла (%d/%d)",
@@ -139,26 +162,49 @@ char *lang_ru[LANG_STR_NR] = {
 };
 
 
-char *lang_fr[LANG_STR_NR] = {
-	"Choisir un jeu (%d/%d)",
-	"Choisir un fichier (%d/%d)",
-	"Démarrage du jeu...",
-	"Erreur lors du démarrage du jeu ! %d",
-	"Chargement du fichier...",
-	"Erreur de chargement du fichier ! %d",
-	"Choisir un jeu",
-	"Lecteur CD",
-	"Charger un jeu CD-ROM",
-	"Console de débogage série",
-	"Charger un binaire",
-	"Mise à jour du firmware",
-	"Mise à jour... Ne pas éteindre le système !",
-	"Erreur de mise à jour !",
-	"Mise à jour terminée ! Redémarrez le système !",
-	"SAROO Menu de démarrage",
-	"Vérification du disque...",
-	"Aucun disque trouvé !",
-	"Disque de jeu non détecté !"
+char *lang_zhtw[LANG_STR_NR] = {
+	"選擇遊戲(%d/%d)",
+	"選擇檔案(%d/%d)",
+	"啟動遊戲中......",
+	"遊戲啟動失敗! %d",
+	"載入檔案中......",
+	"檔案載入失敗! %d",
+	"選擇遊戲",
+	"系統CD播放器",
+	"執行遊戲光碟",
+	"UART除錯工具",
+	"執行應用程式擴充檔案",
+	"升級韌體",
+	"韌體升級中,請勿斷電...",
+	"韌體升級失敗!",
+	"韌體升級完成,請重新開機!",
+	"SAROO 主選單",
+	"檢查光碟中......",
+	"未發現光碟!",
+	"不是遊戲光碟!",
+};
+
+
+char *lang_de[LANG_STR_NR] = {
+	"Spielauswahl(%d/%d)",
+	"Dateiauswahl(%d/%d)",
+	"Spiel wird geladen ......",
+	"Laden des Spiels fehlgeschlagen! %d",
+	"Datei wird geladen ......",
+	"Laden der Datei fehlgeschlagen! %d",
+	"Spiel auswählen",
+	"System CD-Player",
+	"Starte Spiel von CD",
+	"Serielles Debug Menü",
+	"Lade Binärdatei",
+	"Firmware Update",
+	"Update läuft... Konsole nicht ausschalten!",
+	"Update fehlgeschlagen!",
+	"Update erfolgreich! Konsole neu starten.",
+	"SAROO Hauptmenü",
+	"Prüfe CD ......",
+	"Keine CD gefunden!",
+	"Keine Spiele-CD!",
 };
 
 
@@ -189,6 +235,7 @@ char *TT(char *str)
 	STR_ENTRY *entry = lang_str_table[hash&0xff];
 	while(entry){
 		if(hash==entry->hash){
+			//printk("TT: %s(%08x) -> %d %s\n", str, hash, entry->index, lang_cur[entry->index]);
 			return lang_cur[entry->index];
 		}
 		entry = entry->next;
@@ -229,9 +276,23 @@ void lang_init(void)
 	}else if(lang_id==3){
 		lang_cur = lang_ja;
 	}else if(lang_id==4){
-		lang_cur = lang_ru;
-	}else if(lang_id==5){
 		lang_cur = lang_fr;
+	}else if(lang_id==5){
+		lang_cur = lang_ru;
+	}else if(lang_id==6){
+		lang_cur = lang_zhtw;
+	}else if(lang_id==7){
+		lang_cur = lang_de;
 	}
+}
+
+
+void lang_next(void)
+{
+	lang_id += 1;
+	if(lang_id>7)
+		lang_id = 0;
+
+	lang_init();
 }
 
